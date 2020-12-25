@@ -1,12 +1,12 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
-
+import ChartController from '~/components/chartController/chartController';
 
 const App: React.FC = () => (
   <div className="root">
     <main id="content">
       <div className="toolbar" />
       <div>Main page</div>
+      <ChartController />
     </main>
   </div>
 );
