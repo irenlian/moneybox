@@ -27,10 +27,10 @@ import { getY } from '@visx/shape/lib/util/accessors';
 const margin: MarginType = { top: 10, right: 0, bottom: 10, left: 0 };
 
 export const backgroundColor = 'rgb(39, 43, 77)';
-export const lineColor = 'rgb(51, 51, 51)';
+export const lineColor = 'rgb(38, 222, 176)';
 const axisColor = '#fff';
 const tickLabelColor = '#fff';
-export const labelColor = '#340098';
+export const labelColor = 'rgba(254, 110, 158, 0.6)';
 const gridColor = '#6e0fca';
 
 type Props = {
@@ -82,7 +82,7 @@ const LinearChart = withTooltip<Props, Point>(
         if (!d) return;
         showTooltip({
           tooltipData: d,
-          tooltipLeft: x,
+          tooltipLeft: timeScale(getYear(d)),
           tooltipTop: amountScale(getAmount(d)),
         });
       },
