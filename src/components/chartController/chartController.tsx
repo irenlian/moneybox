@@ -28,17 +28,23 @@ const ChartController: React.FC<Props> = ({}) => {
     savingsAmount: 1500,
     startWithdrawing: 60,
     withdrawingAmount: 1000,
+    corrections: [],
   });
 
   const calculateAmount = (i: number, previousAmount: number) => {
     if (i === 0) {
       return form.startAmount;
     }
-    const withdraw = i + form.age > form.startWithdrawing ? form.withdrawingAmount : 0;
+
+    const currentYear = new Date().getFullYear() + i;
+    const withdrawAfterRetirement = i + form.age > form.startWithdrawing ? form.withdrawingAmount : 0;
+    const correct = form.corrections.reduce((sum, e) => e.year === currentYear ? sum + (e.amount || 0) : sum, 0);
+    const corrections = correct - withdrawAfterRetirement;
+
     if (i + form.age < form.startInvesting || i + form.age > form.endInvesting) {
-      return Math.round(previousAmount * (1 + INTEREST_RATE)) - withdraw;
+      return Math.round(previousAmount * (1 + INTEREST_RATE)) + corrections;
     }
-    return Math.round((previousAmount + form.savingsAmount) * (1 + INTEREST_RATE)) - withdraw;
+    return Math.round((previousAmount + form.savingsAmount) * (1 + INTEREST_RATE)) + corrections;
   }
 
   const data: Point[] = useMemo(
@@ -68,7 +74,7 @@ const ChartController: React.FC<Props> = ({}) => {
     <Container>
       <Form setForm={setForm} />
       <LinearChart data={data} />
-      <Output monthlyRevenue={monthlyRevenue || 0} deposit={deposit || 0} age={form.endInvesting} />
+      <Output monthlyRevenue={monthlyRevenue || 0} deposit={deposit || 0} age={form.startWithdrawing} />
       <CalculationTable data={data} />
     </Container>
   );

@@ -6,6 +6,11 @@ export type Point = {
   age: number;
 };
 
+export type Action = {
+  year?: number;
+  amount?: number;
+}
+
 export type FormType = {
   age: number;
   livingAge: number;
@@ -15,6 +20,7 @@ export type FormType = {
   savingsAmount: number;
   startWithdrawing: number;
   withdrawingAmount: number;
+  corrections: Action[];
 };
 
 export type MarginType = {
