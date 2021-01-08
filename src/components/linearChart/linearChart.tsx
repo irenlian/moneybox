@@ -11,12 +11,14 @@ import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withToolti
 
 import { ChartSizeType, MarginType, Point } from './types';
 import {
-  bisectValue,
+  bisectValue, getAge,
   getAmount,
   getChartSize,
-  getYear, timeFormat,
+  getYear,
+  timeFormat,
   useTimeScale,
-  useValueScale, valueFormat
+  useValueScale,
+  valueFormat
 } from '~/components/linearChart/chartUtils';
 import useClientRect from '~/hooks/useClientRect';
 import { Container } from '~/components/linearChart/linearChart.styled';
@@ -103,7 +105,7 @@ const LinearChart = withTooltip<Props, Point>(
     );
 
     const maxValue = Math.max(...data.map(e => getAmount(e)), 0);
-    const ticks = Math.round(maxValue / 100000) - 1;
+    const ticks = Math.round(maxValue / 100000);
 
     return (
       <Container ref={containerRef}>
@@ -195,6 +197,7 @@ const LinearChart = withTooltip<Props, Point>(
               top={tooltipTop - 12}
               left={tooltipLeft + 12}>
               <div>${Math.round(getAmount(tooltipData))}</div>
+              <div>age {getAge(tooltipData)}</div>
             </TooltipWithBounds>
           </div>
         )}

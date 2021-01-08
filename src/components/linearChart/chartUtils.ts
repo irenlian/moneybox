@@ -23,6 +23,7 @@ export const getChartSize = (margin: MarginType, clientWidth?: number, clientHei
 export const getAmount = (d: Point) => d.amount;
 export const getDate = (d: Point) => d.date;
 export const getYear = (d: Point) => d.date.getFullYear();
+export const getAge = (d: Point) => d.age;
 export const bisectValue = bisector<Point, number>(getYear).left;
 
 // Scales

@@ -10,9 +10,11 @@ type Props = {
 
 const Form: React.FC<Props> = ({ setForm }) => {
   const [living, setLiving] = React.useState<number | number[]>([27, 80]);
-  const [savings, setSavings] = React.useState<number | number[]>([27, 80]);
+  const [savings, setSavings] = React.useState<number | number[]>([27, 50]);
   const [startAmount, setStartAmount] = React.useState<number | number[]>(25000);
   const [monthlySavingAmount, setMonthlySavingAmount] = React.useState<number | number[]>(1500);
+  const [startWithdrawing, setStartWithdrawing] = React.useState<number | number[]>(60);
+  const [withdrawingAmount, setWithdrawingAmount] = React.useState<number | number[]>(1000);
 
   const handleChange = (setValue: (value: number | number[]) => void) => (
     event: any,
@@ -28,7 +30,9 @@ const Form: React.FC<Props> = ({ setForm }) => {
     endInvesting: (savings as number[])[1],
     startAmount: startAmount as number,
     savingsAmount: monthlySavingAmount as number,
-  }), [living, savings, startAmount, monthlySavingAmount]);
+    startWithdrawing: startWithdrawing as number,
+    withdrawingAmount: withdrawingAmount as number,
+  }), [living, savings, startAmount, monthlySavingAmount, startWithdrawing, withdrawingAmount]);
 
   return (
     <Container>
@@ -72,6 +76,27 @@ const Form: React.FC<Props> = ({ setForm }) => {
           onChange={handleChange(setMonthlySavingAmount)}
           min={0}
           max={10000}
+        />
+      </SliderContainer>
+      <SliderContainer>
+        Start withdrawing
+        <Slider
+          aria-labelledby="discrete-slider-always"
+          valueLabelDisplay="on"
+          value={startWithdrawing}
+          onChange={handleChange(setStartWithdrawing)}
+        />
+      </SliderContainer>
+      <SliderContainer>
+        Withdraw amount
+        <Slider
+          aria-labelledby="discrete-slider-always"
+          valueLabelDisplay="on"
+          value={withdrawingAmount}
+          onChange={handleChange(setWithdrawingAmount)}
+          step={100}
+          min={500}
+          max={100000}
         />
       </SliderContainer>
     </Container>

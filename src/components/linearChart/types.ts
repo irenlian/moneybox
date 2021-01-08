@@ -13,6 +13,8 @@ export type FormType = {
   endInvesting: number;
   startAmount: number;
   savingsAmount: number;
+  startWithdrawing: number;
+  withdrawingAmount: number;
 };
 
 export type MarginType = {

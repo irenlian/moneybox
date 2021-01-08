@@ -3,6 +3,8 @@ import LinearChart, { FormType, Point } from '~/components/linearChart';
 import { Container } from './сhartController.styled';
 import CalculationTable from '~/components/calculationTable';
 import Form from '~/components/form';
+import Output from '~/components/output';
+import { getAmount } from '~/components/linearChart/chartUtils';
 
 type Props = {};
 
@@ -24,21 +26,24 @@ const ChartController: React.FC<Props> = ({}) => {
     endInvesting: 50,
     startAmount: 24000,
     savingsAmount: 1500,
+    startWithdrawing: 60,
+    withdrawingAmount: 1000,
   });
 
   const calculateAmount = (i: number, previousAmount: number) => {
     if (i === 0) {
       return form.startAmount;
     }
+    const withdraw = i + form.age > form.startWithdrawing ? form.withdrawingAmount : 0;
     if (i + form.age < form.startInvesting || i + form.age > form.endInvesting) {
-      return Math.round(previousAmount * (1 + INTEREST_RATE));
+      return Math.round(previousAmount * (1 + INTEREST_RATE)) - withdraw;
     }
-    return Math.round((previousAmount + form.savingsAmount) * (1 + INTEREST_RATE));
+    return Math.round((previousAmount + form.savingsAmount) * (1 + INTEREST_RATE)) - withdraw;
   }
 
   const data: Point[] = useMemo(
     () =>
-      [...Array(form.livingAge - form.age).keys()].reduce((arr, i) => {
+      [...Array(form.livingAge - form.age + 1).keys()].reduce((arr, i) => {
         const date = new Date();
         date.setFullYear(date.getFullYear() + i + 1, 0, 1);
         return [
@@ -55,10 +60,15 @@ const ChartController: React.FC<Props> = ({}) => {
     [form],
   );
 
+  const stopPoint = data.find(e => e.age === form.startWithdrawing);
+  const deposit = stopPoint && getAmount(stopPoint);
+  const monthlyRevenue = stopPoint && Math.round(getAmount(stopPoint) * INTEREST_RATE / 12);
+
   return (
     <Container>
       <Form setForm={setForm} />
       <LinearChart data={data} />
+      <Output monthlyRevenue={monthlyRevenue || 0} deposit={deposit || 0} age={form.endInvesting} />
       <CalculationTable data={data} />
     </Container>
   );
