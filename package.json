@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Front-end of MoneyBox website",
   "main": "index.js",
-  "homepage": "https://github.com/irenlian/moneybox#readme",
+  "homepage": "https://irenlian.github.com/moneybox",
   "scripts": {
     "dev": "parcel src/index.html --port 3000",
     "lint": "npm run lint:eslint && npm run lint:style",
