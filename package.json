@@ -13,7 +13,7 @@
     "test": "echo \"No test specified\"",
     "build": "npx parcel build src/index.html",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
