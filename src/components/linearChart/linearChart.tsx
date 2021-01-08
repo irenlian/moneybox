@@ -4,9 +4,8 @@ import uniqueId from 'lodash/uniqueId';
 import { AreaClosed, Line, Bar, LinePath } from '@visx/shape';
 import { withTooltip, TooltipWithBounds } from '@visx/tooltip';
 import { AnimatedAxis, AnimatedGridRows, AnimatedGridColumns } from '@visx/react-spring';
-import { LinearGradient } from '@visx/gradient';
 import { curveMonotoneX } from '@visx/curve';
-import { Orientation, SharedAxisProps, AxisScale } from '@visx/axis';
+import { Orientation, SharedAxisProps, AxisScale, TickFormatter } from '@visx/axis';
 import { localPoint } from '@visx/event';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 
@@ -15,16 +14,15 @@ import {
   bisectValue,
   getAmount,
   getChartSize,
-  getYear,
+  getYear, timeFormat,
   useTimeScale,
-  useValueScale
+  useValueScale, valueFormat
 } from '~/components/linearChart/chartUtils';
 import useClientRect from '~/hooks/useClientRect';
 import { Container } from '~/components/linearChart/linearChart.styled';
-import { getY } from '@visx/shape/lib/util/accessors';
 
 // Leave additional space for the axis and tooltips
-const margin: MarginType = { top: 10, right: 0, bottom: 10, left: 0 };
+const margin: MarginType = { top: 10, right: 0, bottom: 30, left: 40 };
 
 export const backgroundColor = 'rgb(39, 43, 77)';
 export const lineColor = 'rgb(38, 222, 176)';
@@ -32,6 +30,23 @@ const axisColor = '#fff';
 const tickLabelColor = '#fff';
 export const labelColor = 'rgba(254, 110, 158, 0.6)';
 const gridColor = '#6e0fca';
+
+const tickLabelYProps = () =>
+  ({
+    x: 5,
+    fill: tickLabelColor,
+    fontSize: 12,
+    fontFamily: 'sans-serif',
+    textAnchor: 'end',
+  } as const);
+
+const tickLabelXProps = () =>
+  ({
+    fill: tickLabelColor,
+    fontSize: 12,
+    fontFamily: 'sans-serif',
+    textAnchor: 'middle',
+  } as const);
 
 type Props = {
   data: Point[];
@@ -51,8 +66,8 @@ const LinearChart = withTooltip<Props, Point>(
     const [size, setSize] = useState<ChartSizeType>({
       width: 500,
       height: 500,
-      innerWidth: 500,
-      innerHeight: 500,
+      innerWidth: 500 - margin.left,
+      innerHeight: 500 - margin.bottom,
     });
     useEffect(() => {
       if (rect?.width) {
@@ -61,8 +76,6 @@ const LinearChart = withTooltip<Props, Point>(
     }, [rect]);
 
     const { width, height, innerWidth, innerHeight } = size;
-    const scalePadding = 40;
-    const scaleHeight = height - scalePadding;
 
     const amountScale = useValueScale(data, size, margin);
     const timeScale = useTimeScale(data, size, margin);
@@ -89,6 +102,9 @@ const LinearChart = withTooltip<Props, Point>(
       [amountScale, data, showTooltip, timeScale],
     );
 
+    const maxValue = Math.max(...data.map(e => getAmount(e)), 0);
+    const ticks = Math.round(maxValue / 100000) - 1;
+
     return (
       <Container ref={containerRef}>
         <svg width={width} height={height}>
@@ -99,6 +115,39 @@ const LinearChart = withTooltip<Props, Point>(
             yScale={amountScale}
             fill="url(#visx-axis-gradient)"
             curve={curveMonotoneX}
+            height={innerHeight}
+            width={innerWidth}
+          />
+          <AnimatedGridRows
+            key={`gridrows-center`}
+            scale={amountScale}
+            stroke={gridColor}
+            width={innerWidth}
+            left={margin.left}
+            numTicks={ticks}
+            strokeDasharray="1,3"
+            animationTrajectory="center"
+          />
+          <AnimatedAxis
+            orientation={Orientation.left}
+            scale={amountScale}
+            left={margin.left}
+            tickFormat={valueFormat}
+            stroke={axisColor}
+            tickStroke={backgroundColor}
+            tickLabelProps={tickLabelYProps}
+            numTicks={ticks}
+            animationTrajectory="center"
+          />
+          <AnimatedAxis
+            orientation={Orientation.bottom}
+            scale={timeScale}
+            top={innerHeight + 10}
+            tickFormat={timeFormat}
+            stroke={axisColor}
+            tickStroke={axisColor}
+            tickLabelProps={tickLabelXProps}
+            animationTrajectory="center"
           />
           <LinePath
             stroke={lineColor}
@@ -146,7 +195,6 @@ const LinearChart = withTooltip<Props, Point>(
               top={tooltipTop - 12}
               left={tooltipLeft + 12}>
               <div>${Math.round(getAmount(tooltipData))}</div>
-              <div>{getYear(tooltipData)}y</div>
             </TooltipWithBounds>
           </div>
         )}

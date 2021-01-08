@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
-import { scaleLinear, scaleBand } from '@visx/scale';
+import { scaleLinear, scaleBand, ScaleInput } from '@visx/scale';
 import { bisector } from 'd3-array';
 import { ChartSizeType, MarginType, Point } from './types';
+import { AxisScale, TickFormatter } from '@visx/axis';
 
 export const getChartSize = (margin: MarginType, clientWidth?: number, clientHeight?: number): ChartSizeType => {
   const width = clientWidth || 0;
@@ -38,17 +39,6 @@ export const useValueScale = (data: Point[], size: ChartSizeType, margin: Margin
   );
 
 // X axis
-// export const useTimeScale = (xValues: string[], size: ChartSizeType, margin: MarginType) =>
-//   useMemo(
-//     () =>
-//       scaleBand({
-//         domain: xValues,
-//         range: [margin.left, innerWidth + margin.left],
-//       }),
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//     [JSON.stringify(xValues), innerWidth],
-//   );
-
 export const useTimeScale = (data: Point[], size: ChartSizeType, margin: MarginType) =>
   useMemo(
     () =>
@@ -58,3 +48,14 @@ export const useTimeScale = (data: Point[], size: ChartSizeType, margin: MarginT
       }),
     [data, margin.left, size.innerWidth],
   );
+
+export const valueFormat: TickFormatter<ScaleInput<AxisScale>> = (v: number) => {
+  if (v > 1000) {
+    return `$${Math.round(v / 1000)}k`
+  }
+  return `$${v}`;
+}
+
+export const timeFormat: TickFormatter<ScaleInput<AxisScale>> = (v: Date) => {
+  return `${v}`;
+}

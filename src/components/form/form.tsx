@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Slider from '@material-ui/core/Slider';
 import { FormType, Point } from '~/components/linearChart';
-import { Container } from '~/components/form/form.styled';
+import { Container, SliderContainer } from '~/components/form/form.styled';
 
 type Props = {
   // data: Point[];
@@ -32,25 +32,25 @@ const Form: React.FC<Props> = ({ setForm }) => {
 
   return (
     <Container>
-      <div>
+      <SliderContainer>
         Current age and age of living
         <Slider
           value={living}
           onChange={handleChange(setLiving)}
-          valueLabelDisplay="auto"
+          valueLabelDisplay="on"
           aria-labelledby="range-slider"
         />
-      </div>
-      <div>
+      </SliderContainer>
+      <SliderContainer>
         Start saving and stop saving
         <Slider
           value={savings}
           onChange={handleChange(setSavings)}
-          valueLabelDisplay="auto"
+          valueLabelDisplay="on"
           aria-labelledby="range-slider"
         />
-      </div>
-      <div>
+      </SliderContainer>
+      <SliderContainer>
         Start amount in $
         <Slider
           aria-labelledby="discrete-slider-always"
@@ -61,8 +61,8 @@ const Form: React.FC<Props> = ({ setForm }) => {
           min={0}
           max={1000000}
         />
-      </div>
-      <div>
+      </SliderContainer>
+      <SliderContainer>
         Monthly savings in $
         <Slider
           aria-labelledby="discrete-slider-always"
@@ -73,7 +73,7 @@ const Form: React.FC<Props> = ({ setForm }) => {
           min={0}
           max={10000}
         />
-      </div>
+      </SliderContainer>
     </Container>
   );
 };
