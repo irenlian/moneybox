@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Front-end of MoneyBox website",
   "main": "index.js",
+  "homepage": "http://irenlian.github.io/moneybox",
   "scripts": {
     "dev": "parcel src/index.html --port 3000",
     "lint": "npm run lint:eslint && npm run lint:style",
@@ -10,7 +11,9 @@
     "lint:fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "lint:style": "npx stylelint \"./src/**/*.{js,jsx,ts,tsx,scss}\"",
     "test": "echo \"No test specified\"",
-    "build": "npx parcel build src/index.html"
+    "build": "npx parcel build src/index.html",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
