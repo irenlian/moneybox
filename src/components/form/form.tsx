@@ -108,9 +108,9 @@ const Form: React.FC<Props> = ({ setForm }) => {
               valueLabelDisplay="on"
               value={withdrawingAmount}
               onChange={handleChange(setWithdrawingAmount)}
-              step={100}
+              step={50}
               min={500}
-              max={100000}
+              max={10000}
             />
           </SliderContainer>
         </AccordionStyled>

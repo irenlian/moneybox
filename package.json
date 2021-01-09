@@ -11,7 +11,7 @@
     "lint:fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "lint:style": "npx stylelint \"./src/**/*.{js,jsx,ts,tsx,scss}\"",
     "test": "echo \"No test specified\"",
-    "build": "npx parcel build src/index.html",
+    "build": "npx parcel build --public-url '.' src/index.html",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },

@@ -37,7 +37,7 @@ const ChartController: React.FC<Props> = ({}) => {
     }
 
     const currentYear = new Date().getFullYear() + i;
-    const withdrawAfterRetirement = i + form.age > form.startWithdrawing ? form.withdrawingAmount : 0;
+    const withdrawAfterRetirement = i + form.age > form.startWithdrawing ? form.withdrawingAmount * 12 : 0;
     const correct = form.corrections.reduce((sum, e) => e.year === currentYear ? sum + (e.amount || 0) : sum, 0);
     const corrections = correct - withdrawAfterRetirement;
 
