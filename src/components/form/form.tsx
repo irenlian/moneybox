@@ -9,17 +9,18 @@ import ActionList from '~/components/form/actionList';
 import { AccordionDetails } from '@material-ui/core';
 
 type Props = {
+  form: FormType;
   setForm: (form: FormType) => void;
 };
 
-const Form: React.FC<Props> = ({ setForm }) => {
-  const [living, setLiving] = React.useState<number | number[]>([27, 80]);
-  const [savings, setSavings] = React.useState<number | number[]>([27, 50]);
-  const [startAmount, setStartAmount] = React.useState<number | number[]>(25000);
-  const [monthlySavingAmount, setMonthlySavingAmount] = React.useState<number | number[]>(1500);
-  const [startWithdrawing, setStartWithdrawing] = React.useState<number | number[]>(60);
-  const [withdrawingAmount, setWithdrawingAmount] = React.useState<number | number[]>(1000);
-  const [corrections, setCorrections] = React.useState<Action[]>([]);
+const Form: React.FC<Props> = ({ form, setForm }) => {
+  const [living, setLiving] = React.useState<number | number[]>([form.age, form.livingAge]);
+  const [savings, setSavings] = React.useState<number | number[]>([form.startInvesting, form.endInvesting]);
+  const [startAmount, setStartAmount] = React.useState<number | number[]>(form.startAmount);
+  const [monthlySavingAmount, setMonthlySavingAmount] = React.useState<number | number[]>(form.savingsAmount);
+  const [startWithdrawing, setStartWithdrawing] = React.useState<number | number[]>(form.startWithdrawing);
+  const [withdrawingAmount, setWithdrawingAmount] = React.useState<number | number[]>(form.withdrawingAmount);
+  const [corrections, setCorrections] = React.useState<Action[]>(form.corrections);
 
   const handleChange = (setValue: (value: number | number[]) => void) => (event: any, newValue: number | number[]) => {
     setValue(newValue);
@@ -29,21 +30,19 @@ const Form: React.FC<Props> = ({ setForm }) => {
     setValue(newValue);
   };
 
-  useEffect(
-    () =>
-      setForm({
-        age: (living as number[])[0],
-        livingAge: (living as number[])[1],
-        startInvesting: (savings as number[])[0],
-        endInvesting: (savings as number[])[1],
-        startAmount: startAmount as number,
-        savingsAmount: monthlySavingAmount as number,
-        startWithdrawing: startWithdrawing as number,
-        withdrawingAmount: withdrawingAmount as number,
-        corrections,
-      }),
-    [living, savings, startAmount, monthlySavingAmount, startWithdrawing, withdrawingAmount, corrections],
-  );
+  useEffect(() => {
+    setForm({
+      age: (living as number[])[0],
+      livingAge: (living as number[])[1],
+      startInvesting: (savings as number[])[0],
+      endInvesting: (savings as number[])[1],
+      startAmount: startAmount as number,
+      savingsAmount: monthlySavingAmount as number,
+      startWithdrawing: startWithdrawing as number,
+      withdrawingAmount: withdrawingAmount as number,
+      corrections,
+    });
+  }, [living, savings, startAmount, monthlySavingAmount, startWithdrawing, withdrawingAmount, corrections]);
 
   return (
     <Container>
@@ -102,7 +101,7 @@ const Form: React.FC<Props> = ({ setForm }) => {
             />
           </SliderContainer>
           <SliderContainer>
-            Withdraw amount
+            Monthly withdraw amount $
             <Slider
               aria-labelledby="discrete-slider-always"
               valueLabelDisplay="on"

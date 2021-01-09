@@ -1,7 +1,7 @@
 import React from 'react';
-import { ActionListContainer, ActionsFormContainer, ActionItem } from '~/components/form/form.styled';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add, Delete } from '@material-ui/icons';
+import { ActionListContainer, ActionsFormContainer, ActionItem } from '~/components/form/form.styled';
 import { Action } from '~/components/linearChart';
 
 type Props = {
@@ -29,6 +29,10 @@ const ActionList: React.FC<Props> = ({ values, onChange }) => {
       (copy[i] as any)[type] = newValue;
       onChange(copy);
     }
+  };
+
+  const handleDelete = (i: number) => () => {
+    onChange([...values.slice(0, i), ...values.slice(i + 1)]);
   };
 
   return (
@@ -60,6 +64,9 @@ const ActionList: React.FC<Props> = ({ values, onChange }) => {
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             onChange={handleChange('amount', i)}
           />
+          <IconButton onClick={handleDelete(i)}>
+            <Delete />
+          </IconButton>
         </ActionItem>
       ))}
     </ActionListContainer>
