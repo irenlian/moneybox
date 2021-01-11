@@ -1,7 +1,10 @@
+export const MILLION = 1000000;
+export const HUNDRED_THOUSAND = 100000;
+export const THOUSAND = 1000;
+
 export type Point = {
   id: number;
   amount: number;
-  a: number;
   date: Date;
   age: number;
 };
@@ -9,7 +12,7 @@ export type Point = {
 export type Action = {
   year?: number;
   amount?: number;
-}
+};
 
 export type FormType = {
   age: number;
@@ -20,6 +23,8 @@ export type FormType = {
   savingsAmount: number;
   startWithdrawing: number;
   withdrawingAmount: number;
+  growingInterestRate: number;
+  savingInterestRate: number;
   corrections: Action[];
 };
 

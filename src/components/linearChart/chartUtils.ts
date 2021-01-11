@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { scaleLinear, scaleBand, ScaleInput } from '@visx/scale';
+import { scaleLinear, ScaleInput } from '@visx/scale';
 import { bisector } from 'd3-array';
-import { ChartSizeType, MarginType, Point } from './types';
+import { ChartSizeType, MarginType, MILLION, Point, THOUSAND } from './types';
 import { AxisScale, TickFormatter } from '@visx/axis';
 
 export const getChartSize = (margin: MarginType, clientWidth?: number, clientHeight?: number): ChartSizeType => {
@@ -51,12 +51,15 @@ export const useTimeScale = (data: Point[], size: ChartSizeType, margin: MarginT
   );
 
 export const valueFormat: TickFormatter<ScaleInput<AxisScale>> = (v: number) => {
-  if (v > 1000) {
-    return `$${Math.round(v / 1000)}k`
+  if (v % MILLION === 0) {
+    return `$${Math.round(v / MILLION)}m`;
+  }
+  if (v % THOUSAND === 0) {
+    return `$${Math.round(v / THOUSAND)}k`;
   }
   return `$${v}`;
-}
+};
 
 export const timeFormat: TickFormatter<ScaleInput<AxisScale>> = (v: Date) => {
   return `${v}`;
-}
+};

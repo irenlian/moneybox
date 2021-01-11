@@ -3,22 +3,23 @@ import uniqueId from 'lodash/uniqueId';
 
 import { AreaClosed, Line, Bar, LinePath } from '@visx/shape';
 import { withTooltip, TooltipWithBounds } from '@visx/tooltip';
-import { AnimatedAxis, AnimatedGridRows, AnimatedGridColumns } from '@visx/react-spring';
+import { AnimatedAxis, AnimatedGridRows } from '@visx/react-spring';
 import { curveMonotoneX } from '@visx/curve';
-import { Orientation, SharedAxisProps, AxisScale, TickFormatter } from '@visx/axis';
+import { Orientation } from '@visx/axis';
 import { localPoint } from '@visx/event';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 
-import { ChartSizeType, MarginType, Point } from './types';
+import { ChartSizeType, HUNDRED_THOUSAND, MarginType, MILLION, Point } from './types';
 import {
-  bisectValue, getAge,
+  bisectValue,
+  getAge,
   getAmount,
   getChartSize,
   getYear,
   timeFormat,
   useTimeScale,
   useValueScale,
-  valueFormat
+  valueFormat,
 } from '~/components/linearChart/chartUtils';
 import useClientRect from '~/hooks/useClientRect';
 import { Container } from '~/components/linearChart/linearChart.styled';
@@ -105,7 +106,7 @@ const LinearChart = withTooltip<Props, Point>(
     );
 
     const maxValue = Math.max(...data.map(e => getAmount(e)), 0);
-    const ticks = Math.round(maxValue / 100000);
+    const ticks = Math.round(maxValue / (maxValue >= 2 * MILLION ? MILLION : HUNDRED_THOUSAND));
 
     return (
       <Container ref={containerRef}>
@@ -121,7 +122,7 @@ const LinearChart = withTooltip<Props, Point>(
             width={innerWidth}
           />
           <AnimatedGridRows
-            key={`gridrows-center`}
+            key="gridrows-center"
             scale={amountScale}
             stroke={gridColor}
             width={innerWidth}
@@ -180,22 +181,13 @@ const LinearChart = withTooltip<Props, Point>(
                 pointerEvents="none"
                 strokeDasharray="5,2"
               />
-              <circle
-                cx={tooltipLeft}
-                cy={tooltipTop}
-                r={4}
-                fill={lineColor}
-                pointerEvents="none"
-              />
+              <circle cx={tooltipLeft} cy={tooltipTop} r={4} fill={lineColor} pointerEvents="none" />
             </g>
           )}
         </svg>
         {tooltipData && (
           <div>
-            <TooltipWithBounds
-              key={uniqueId()}
-              top={tooltipTop - 12}
-              left={tooltipLeft + 12}>
+            <TooltipWithBounds key={uniqueId()} top={tooltipTop - 12} left={tooltipLeft + 12}>
               <div>${Math.round(getAmount(tooltipData))}</div>
               <div>age {getAge(tooltipData)}</div>
             </TooltipWithBounds>

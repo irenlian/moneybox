@@ -17,6 +17,10 @@ export const SliderContainer = styled.div`
   margin: 10px 0;
 `;
 
+export const SliderContainerWide = styled(SliderContainer)`
+  grid-column: 1/3;
+`;
+
 export const ActionListContainer = styled.div`
   width: 100%;
 `;

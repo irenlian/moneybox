@@ -3,10 +3,10 @@ import Slider from '@material-ui/core/Slider';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Action, FormType, Point } from '~/components/linearChart';
-import { Container, SliderContainer, AccordionStyled } from '~/components/form/form.styled';
-import ActionList from '~/components/form/actionList';
 import { AccordionDetails } from '@material-ui/core';
+import { Action, FormType } from '~/components/linearChart';
+import { Container, SliderContainer, AccordionStyled, SliderContainerWide } from '~/components/form/form.styled';
+import ActionList from '~/components/form/actionList';
 
 type Props = {
   form: FormType;
@@ -20,6 +20,8 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
   const [monthlySavingAmount, setMonthlySavingAmount] = React.useState<number | number[]>(form.savingsAmount);
   const [startWithdrawing, setStartWithdrawing] = React.useState<number | number[]>(form.startWithdrawing);
   const [withdrawingAmount, setWithdrawingAmount] = React.useState<number | number[]>(form.withdrawingAmount);
+  const [growingInterestRate, setGrowingInterestRate] = React.useState<number | number[]>(form.growingInterestRate);
+  const [savingInterestRate, setSavingInterestRate] = React.useState<number | number[]>(form.savingInterestRate);
   const [corrections, setCorrections] = React.useState<Action[]>(form.corrections);
 
   const handleChange = (setValue: (value: number | number[]) => void) => (event: any, newValue: number | number[]) => {
@@ -40,9 +42,21 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
       savingsAmount: monthlySavingAmount as number,
       startWithdrawing: startWithdrawing as number,
       withdrawingAmount: withdrawingAmount as number,
+      growingInterestRate: growingInterestRate as number,
+      savingInterestRate: savingInterestRate as number,
       corrections,
     });
-  }, [living, savings, startAmount, monthlySavingAmount, startWithdrawing, withdrawingAmount, corrections]);
+  }, [
+    living,
+    savings,
+    startAmount,
+    monthlySavingAmount,
+    startWithdrawing,
+    withdrawingAmount,
+    growingInterestRate,
+    savingInterestRate,
+    corrections,
+  ]);
 
   return (
     <Container>
@@ -67,7 +81,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
               aria-labelledby="range-slider"
             />
           </SliderContainer>
-          <SliderContainer>
+          <SliderContainerWide>
             Start amount in $
             <Slider
               aria-labelledby="discrete-slider-always"
@@ -77,9 +91,10 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
               onChange={handleChange(setStartAmount)}
               min={0}
               max={1000000}
+              valueLabelFormat={x => (x > 1000 ? `${Math.floor(x / 1000)}k` : x)}
             />
-          </SliderContainer>
-          <SliderContainer>
+          </SliderContainerWide>
+          <SliderContainerWide>
             Monthly savings in $
             <Slider
               aria-labelledby="discrete-slider-always"
@@ -90,7 +105,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
               min={0}
               max={10000}
             />
-          </SliderContainer>
+          </SliderContainerWide>
           <SliderContainer>
             Start withdrawing
             <Slider
@@ -110,6 +125,24 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
               step={50}
               min={500}
               max={10000}
+            />
+          </SliderContainer>
+          <SliderContainer>
+            Interest rate during active investing period, %
+            <Slider
+              aria-labelledby="discrete-slider-always"
+              valueLabelDisplay="on"
+              value={growingInterestRate}
+              onChange={handleChange(setGrowingInterestRate)}
+            />
+          </SliderContainer>
+          <SliderContainer>
+            Interest rate after active investing period, %
+            <Slider
+              aria-labelledby="discrete-slider-always"
+              valueLabelDisplay="on"
+              value={savingInterestRate}
+              onChange={handleChange(setSavingInterestRate)}
             />
           </SliderContainer>
         </AccordionStyled>
