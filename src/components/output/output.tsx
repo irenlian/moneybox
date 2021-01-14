@@ -1,5 +1,7 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Container } from '~/components/output/output.styled';
+import { output } from '~/locales/localeKeys';
 
 type Props = {
   monthlyRevenue: number;
@@ -7,11 +9,15 @@ type Props = {
   age: number;
 };
 
-const Output: React.FC<Props> = ({ monthlyRevenue, deposit, age }) => (
-  <Container>
-    Finally you can get ${monthlyRevenue} monthly from the deposit ${Math.round(deposit / 1000)}
-    k at age of {age} years
-  </Container>
-);
+const Output: React.FC<Props> = ({ monthlyRevenue, deposit, age }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Container>
+      {t(output.finally)} ${monthlyRevenue} {t(output.atAge)} ${Math.round(deposit / 1000)}
+      {t(output.fromDeposit)} {age} {t(output.years)}
+    </Container>
+  );
+};
 
 export default Output;

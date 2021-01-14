@@ -1,0 +1,32 @@
+{
+    "settings/basic": "Basic settings",
+    "settings/livingAge": "Current age and age of living",
+    "settings/savingAge": "Start saving and stop saving",
+    "settings/startAmount": "Start amount in $",
+    "settings/savingAmount": "Monthly savings in $",
+    "settings/withdrawingAge": "Start withdrawing",
+    "settings/withdrawingAmount": "Monthly withdraw amount $",
+    "settings/interestActive": "Interest rate during active investing period, %",
+    "settings/interestPassive": "Interest rate after active investing period, %",
+    "settings/actions": "One time actions",
+    "settings/inputTransaction": "Input the transaction:",
+    "settings/amount": "Amount +/-",
+    "settings/year": "Year",
+
+    "intro/howToUse": "How to use?",
+    "intro/rule1": "Pick the age of investing and sums. If you need, you may correct the interest rates.",
+    "intro/rule2": "Select withdrawing to use your deposit after retirement.",
+    "intro/rule3": "You'll see the calculated amount below the chart which you might want to compare with the desirable sum to use.",
+    "intro/rule4": "After finishing the settings, the table can be downloaded with the export button.",
+    "intro/rule5": "All parameters will be saved in your browser.",
+
+    "output/finally": "Finally you can get",
+    "output/fromDeposit": "monthly from the deposit",
+    "output/atAge": "k at age of",
+    "output/years": "years",
+
+    "table/export": "Export to Excel",
+    "table/year": "Year",
+    "table/age": "Age",
+    "table/deposit": "Deposit"
+}

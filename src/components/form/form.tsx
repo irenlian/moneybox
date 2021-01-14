@@ -4,9 +4,11 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { AccordionDetails } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Action, FormType } from '~/components/linearChart';
 import { Container, SliderContainer, AccordionStyled, SliderContainerWide } from '~/components/form/form.styled';
 import ActionList from '~/components/form/actionList';
+import { settings } from '~/locales/localeKeys';
 
 type Props = {
   form: FormType;
@@ -14,6 +16,8 @@ type Props = {
 };
 
 const Form: React.FC<Props> = ({ form, setForm }) => {
+  const { t } = useTranslation();
+
   const [living, setLiving] = React.useState<number | number[]>([form.age, form.livingAge]);
   const [savings, setSavings] = React.useState<number | number[]>([form.startInvesting, form.endInvesting]);
   const [startAmount, setStartAmount] = React.useState<number | number[]>(form.startAmount);
@@ -61,10 +65,10 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
   return (
     <Container>
       <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Basic settings</AccordionSummary>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>{t(settings.basic)}</AccordionSummary>
         <AccordionStyled>
           <SliderContainer>
-            Current age and age of living
+            {t(settings.livingAge)}
             <Slider
               value={living}
               onChange={handleChange(setLiving)}
@@ -73,7 +77,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainer>
           <SliderContainer>
-            Start saving and stop saving
+            {t(settings.savingAge)}
             <Slider
               value={savings}
               onChange={handleChange(setSavings)}
@@ -82,7 +86,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainer>
           <SliderContainerWide>
-            Start amount in $
+            {t(settings.startAmount)}
             <Slider
               aria-labelledby="discrete-slider-always"
               step={1000}
@@ -95,7 +99,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainerWide>
           <SliderContainerWide>
-            Monthly savings in $
+            {t(settings.savingAmount)}
             <Slider
               aria-labelledby="discrete-slider-always"
               step={50}
@@ -107,7 +111,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainerWide>
           <SliderContainer>
-            Start withdrawing
+            {t(settings.withdrawingAge)}
             <Slider
               aria-labelledby="discrete-slider-always"
               valueLabelDisplay="on"
@@ -116,7 +120,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainer>
           <SliderContainer>
-            Monthly withdraw amount $
+            {t(settings.withdrawingAmount)}
             <Slider
               aria-labelledby="discrete-slider-always"
               valueLabelDisplay="on"
@@ -128,7 +132,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainer>
           <SliderContainer>
-            Interest rate during active investing period, %
+            {t(settings.interestActive)}
             <Slider
               aria-labelledby="discrete-slider-always"
               valueLabelDisplay="on"
@@ -137,7 +141,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
             />
           </SliderContainer>
           <SliderContainer>
-            Interest rate after active investing period, %
+            {t(settings.interestPassive)}
             <Slider
               aria-labelledby="discrete-slider-always"
               valueLabelDisplay="on"
@@ -148,7 +152,7 @@ const Form: React.FC<Props> = ({ form, setForm }) => {
         </AccordionStyled>
       </Accordion>
       <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>One time actions</AccordionSummary>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>{t(settings.actions)}</AccordionSummary>
         <AccordionDetails>
           <ActionList values={corrections} onChange={handleActionChange(setCorrections)} />
         </AccordionDetails>

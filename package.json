@@ -13,7 +13,8 @@
     "test": "echo \"No test specified\"",
     "build": "npx parcel build --public-url '.' src/index.html",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "generate-locales": "node src/locales/generateLocales.js && eslint \"src/locales/localeKeys.ts\" --fix --quiet"
   },
   "repository": {
     "type": "git",
@@ -46,10 +47,13 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "font-awesome": "^4.7.0",
+    "i18next": "^19.8.4",
+    "i18next-browser-languagedetector": "^6.0.1",
     "lodash": "^4.17.20",
     "prettier": "^2.0.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-i18next": "^11.8.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.1"
@@ -64,6 +68,7 @@
     "@types/styled-components": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
+    "deepmerge": "^4.2.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-airbnb-typescript": "^7.2.1",

@@ -1,37 +1,39 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { useTranslation } from 'react-i18next';
 import { Point } from '~/components/linearChart';
 import { getAge, getAmount, getYear } from '~/components/linearChart/chartUtils';
 import { StyledButton } from './calculationTable.styled';
+import { table } from '~/locales/localeKeys';
 
 type Props = {
   data: Point[];
 };
 
-const columns: ColDef[] = [
+const getColumns = (t: any): ColDef[] => [
   {
     field: 'date',
-    headerName: 'Year',
+    headerName: t(table.year),
     type: 'date',
     flex: 1,
   },
   {
     field: 'age',
-    headerName: 'Age',
+    headerName: t(table.age),
     type: 'number',
     flex: 1,
   },
   {
     field: 'amount',
-    headerName: 'Deposit',
+    headerName: t(table.deposit),
     type: 'number',
     flex: 1,
   },
 ];
 
-const createTable = (data: Point[]) => {
+const createTable = (data: Point[], t: any) => {
   let tableHTML = '<tbody>';
-  tableHTML += '<tr><td>Year</td><td>Age</td><td>Amount</td></tr>';
+  tableHTML += `<tr><td>${t(table.year)}</td><td>${t(table.age)}</td><td>${t(table.deposit)}</td></tr>`;
   data.forEach(p => {
     tableHTML += `<tr><td>${getYear(p)}</td><td>${getAge(p)}</td><td>${getAmount(p)}</td></tr>`;
   });
@@ -78,10 +80,16 @@ function exportTableToExcel(tableHTML: string, file = '') {
 }
 
 const CalculationTable: React.FC<Props> = ({ data }) => {
+  const { t } = useTranslation();
+
+  const columns: ColDef[] = useMemo(() => getColumns(t), [t]);
+
   return (
     <>
-      <StyledButton variant="contained" onClick={() => exportTableToExcel(parseToXLS(createTable(data)), 'investing')}>
-        Export to Excel
+      <StyledButton
+        variant="contained"
+        onClick={() => exportTableToExcel(parseToXLS(createTable(data, t)), 'investing')}>
+        {t(table.export)}
       </StyledButton>
       <DataGrid rows={data} columns={columns} pageSize={100} />
     </>

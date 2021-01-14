@@ -1,8 +1,11 @@
 import React from 'react';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from '@material-ui/core';
 import { Add, Delete } from '@material-ui/icons';
+import { useTranslation } from 'react-i18next';
+import uniqueId from 'lodash/uniqueId';
 import { ActionListContainer, ActionsFormContainer, ActionItem } from '~/components/form/form.styled';
 import { Action } from '~/components/linearChart';
+import { settings } from '~/locales/localeKeys';
 
 type Props = {
   values: Action[];
@@ -10,6 +13,8 @@ type Props = {
 };
 
 const ActionList: React.FC<Props> = ({ values, onChange }) => {
+  const { t } = useTranslation();
+
   const handleAdd = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -38,11 +43,17 @@ const ActionList: React.FC<Props> = ({ values, onChange }) => {
   return (
     <ActionListContainer>
       <ActionsFormContainer>
-        <p>Input the transaction:</p>
+        <p>{t(settings.inputTransaction)}</p>
         <form onSubmit={handleAdd}>
-          <TextField label="Year" name="year" id="year" defaultValue={new Date().getFullYear()} placeholder="Year" />
+          <TextField
+            label="Year"
+            name="year"
+            id="year"
+            defaultValue={new Date().getFullYear()}
+            placeholder={t(settings.year)}
+          />
           <FormControl fullWidth>
-            <InputLabel htmlFor="amount">Amount +/-</InputLabel>
+            <InputLabel htmlFor="amount">{t(settings.amount)}</InputLabel>
             <Input
               id="amount"
               name="amount"
@@ -56,7 +67,7 @@ const ActionList: React.FC<Props> = ({ values, onChange }) => {
         </form>
       </ActionsFormContainer>
       {values.map((action, i) => (
-        <ActionItem key={i}>
+        <ActionItem key={uniqueId()}>
           <p>{i + 1}.</p>
           <TextField name="year" value={action.year} onChange={handleChange('year', i)} />
           <Input
