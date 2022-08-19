@@ -1,5 +1,6 @@
 {
     "settings/basic": "Basic settings",
+    "settings/firstQuestion": "Are you ready to find out how much you will earn during retirement?",
     "settings/livingAge": "Current age and age of living",
     "settings/savingAge": "Start saving and stop saving",
     "settings/startAmount": "Start amount in $",

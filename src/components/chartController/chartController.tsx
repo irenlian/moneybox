@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import LinearChart, { FormType, Point } from '~/components/linearChart';
 import Intro from '~/components/intro';
-import { Container } from './сhartController.styled';
+import { ColumnsContainer, Container } from './сhartController.styled';
 import CalculationTable from '~/components/calculationTable';
 import Form from '~/components/form';
 import Output from '~/components/output';
 import { getAmount } from '~/components/linearChart/chartUtils';
+import Questionary from '~/components/questionary';
 
 type Props = {};
 
@@ -77,15 +78,24 @@ const ChartController: React.FC<Props> = () => {
 
   return (
     <Container>
-      <Intro />
-      <Form
-        setForm={async (changedForm: FormType) => {
-          await setForm(changedForm);
-          localStorage.setItem('moneybox', JSON.stringify(changedForm));
-        }}
-        form={form}
-      />
-      <LinearChart data={data} />
+      {/*<Intro />*/}
+      {/*<Form*/}
+      {/*  setForm={async (changedForm: FormType) => {*/}
+      {/*    await setForm(changedForm);*/}
+      {/*    localStorage.setItem('moneybox', JSON.stringify(changedForm));*/}
+      {/*  }}*/}
+      {/*  form={form}*/}
+      {/*/>*/}
+      <ColumnsContainer>
+        <Questionary
+          setForm={async (changedForm: FormType) => {
+            await setForm(changedForm);
+            localStorage.setItem('moneybox', JSON.stringify(changedForm));
+          }}
+          form={form}
+        />
+        <LinearChart data={data} />
+      </ColumnsContainer>
       <Output monthlyRevenue={monthlyRevenue || 0} deposit={deposit || 0} age={form.startWithdrawing} />
       <CalculationTable data={data} />
     </Container>

@@ -4,6 +4,7 @@
 
 export const settings = {
   basic: 'settings/basic',
+  firstQuestion: 'settings/firstQuestion',
   livingAge: 'settings/livingAge',
   savingAge: 'settings/savingAge',
   startAmount: 'settings/startAmount',

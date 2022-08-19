@@ -5,3 +5,8 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 20px;
 `;
+
+export const ColumnsContainer = styled.div`
+  display: grid;
+  grid-template-columns: 30% 70%;
+`;

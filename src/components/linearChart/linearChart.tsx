@@ -57,13 +57,39 @@ type Props = {
 
 const LinearChart = withTooltip<Props, Point>(
   ({
-    data,
     showTooltip,
     hideTooltip,
     tooltipData,
     tooltipTop = 0,
     tooltipLeft = 0,
   }: Props & WithTooltipProvidedProps<Point>) => {
+    const year = 365 * 24 * 60 * 60 * 1000;
+    const data: Point[] = [
+      {
+        id: 1,
+        amount: 10,
+        date: new Date(1 * year),
+        age: 1,
+      },
+      {
+        id: 2,
+        amount: 100,
+        date: new Date(2 * year),
+        age: 10,
+      },
+      {
+        id: 3,
+        amount: 50,
+        date: new Date(2 * year),
+        age: 10,
+      },
+      {
+        id: 4,
+        amount: 10,
+        date: new Date(1 * year),
+        age: 10,
+      },
+    ];
     // Chart size calculation
     const [rect, containerRef] = useClientRect();
     const [size, setSize] = useState<ChartSizeType>({
@@ -106,7 +132,10 @@ const LinearChart = withTooltip<Props, Point>(
     );
 
     const maxValue = Math.max(...data.map(e => getAmount(e)), 0);
-    const ticks = Math.round(maxValue / (maxValue >= 2 * MILLION ? MILLION : HUNDRED_THOUSAND));
+    let ticks = Math.round(maxValue / (maxValue >= 2 * MILLION ? MILLION : HUNDRED_THOUSAND));
+    if (ticks > 15) {
+      ticks = 15;
+    }
 
     return (
       <Container ref={containerRef}>
